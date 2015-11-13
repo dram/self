@@ -233,6 +233,13 @@ static PrimDesc fntable1[] = {
  "of objects change upon scavenges and garbage collections)."
 },
 {
+"AllocateFromByteVector:",fntype(&allocate_from_bv_glue),
+ ExternalPrimitive, UnknownPrimType,
+ SIDEEFFECTS,
+ "Returns the receiver (a proxy, usually a fctProxy) with a pointer to a "
+ "memory block containing a copy of the byteVector contents. "
+},
+{
 "AnnotateSpyLog", fntype(&SelfMonitor::annotateLog_prim),
  ExternalPrimitive, ReceiverPrimType,
  SIDEEFFECTS,

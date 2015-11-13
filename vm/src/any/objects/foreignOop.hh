@@ -59,7 +59,7 @@ class foreignOopClass: public slotsOopClass {  // Abstract class.
 
  private:
 
-  C_pointer cObject;     // object in C heap pointed to by me.
+  C_pointer cObject;              // object in C heap pointed to by me.
 
  protected:
 
@@ -78,7 +78,7 @@ class foreignOopClass: public slotsOopClass {  // Abstract class.
 
 
  public:
-
+     
   void *get_pointer() { 
     return addr()->cObject.get(); 
   }

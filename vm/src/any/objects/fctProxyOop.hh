@@ -31,6 +31,7 @@ class fctProxyOopClass: public proxyOopClass {
   private:
 
     smiOop noOfArgs;    /* How many args to give, when calling this fct. */
+    smi    size_of_foreign_object;  // size of the malloced foreign memory  
 
   protected:
 
@@ -46,6 +47,9 @@ class fctProxyOopClass: public proxyOopClass {
     }
 
   public:
+      
+    // Native infrastructure
+    oop allocate_from_bv_prim(byteVectorOop bv);
 
     fctType get_pointer() {
       return fctType(proxyOopClass::get_pointer());

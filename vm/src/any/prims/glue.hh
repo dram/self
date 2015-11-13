@@ -161,13 +161,15 @@ extern const char *TS_func;    /* Type seal for functions (from dynLink).       
 
 // broken up for MetroWorks -- dmu, see glue.c
 
-# define fctProxy_glue_1                                                                                                                                         \
-   CC_mber_0(smi,,  oop,fctProxy, get_noOfArgs_prim, get_noOfArgs_prim_glue,  fail                                                                     ) \
-   CC_mber_1(oop,,  oop,fctProxy, set_noOfArgs_prim, set_noOfArgs_prim_glue,  fail, smi,                                                               ) \
-   CC_mber_0(oop,,  oop,fctProxy, call_and_convert0, call_and_convert0_glue,                                                                           ) \
-   CC_mber_1(oop,,  oop,fctProxy, call_and_convert1, call_and_convert1_glue,, any,void*                                                                ) \
-   CC_mber_2(oop,,  oop,fctProxy, call_and_convert2, call_and_convert2_glue,, any,void*, any,void*                                                     ) \
-   CC_mber_3(oop,,  oop,fctProxy, call_and_convert3, call_and_convert3_glue,, any,void*, any,void*, any,void*                                          ) \
+# define fctProxy_glue_1                                                                                                                                 \
+   CC_mber_0(smi,,  oop,fctProxy, get_noOfArgs_prim,     get_noOfArgs_prim_glue,  fail                                                                     ) \
+   CC_mber_1(oop,,  oop,fctProxy, set_noOfArgs_prim,     set_noOfArgs_prim_glue,  fail, smi,                                                               ) \
+   CC_mber_0(oop,,  oop,fctProxy, call_and_convert0,     call_and_convert0_glue,                                                                           ) \
+   CC_mber_1(oop,,  oop,fctProxy, call_and_convert1,     call_and_convert1_glue,, any,void*                                                                ) \
+   CC_mber_2(oop,,  oop,fctProxy, call_and_convert2,     call_and_convert2_glue,, any,void*, any,void*                                                     ) \
+   CC_mber_3(oop,,  oop,fctProxy, call_and_convert3,     call_and_convert3_glue,, any,void*, any,void*, any,void*                                          ) \
+   CC_mber_1(oop,,  oop,fctProxy, allocate_from_bv_prim, allocate_from_bv_glue,,  oop,byteVector                                                           ) \
+   
 
 
 # define fctProxy_glue_2 \

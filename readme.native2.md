@@ -18,7 +18,7 @@ Differences from first attempt are:
 
 Primitives:
 
-(fctProxy) _CopyCodeFromByteVector: (byteVector) -> (fctProxy)
+(fctProxy) _AllocateFromByteVector: (byteVector) -> (fctProxy)
 (fctProxy) _Run(With:With:With:With: oop) IfDead: blk -> (oop)
 (fctProxy) _FreeMemory -> (fctProxy)
 
@@ -48,3 +48,4 @@ Progress
 --------
  
 2015-11-12     Created this readme file.
+2015-11-13     Created _AllocateFromByteVector: primitive.

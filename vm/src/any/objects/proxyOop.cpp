@@ -14,3 +14,4 @@ const void *deadProxyObject = (void *)0x109b1500;
 bool proxyOopClass::verify() {
   return foreignOopClass::verify() && addr()->type_seal.verify();
 }
+

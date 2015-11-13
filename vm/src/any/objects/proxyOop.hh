@@ -28,7 +28,7 @@ class proxyOopClass: public foreignOopClass {
 
   private:
 
-    C_pointer  type_seal; // type of object in C heap pointed to by my parent
+    C_pointer  type_seal;               // type of object in C heap pointed to by my parent
 
   protected:
 
@@ -62,6 +62,6 @@ class proxyOopClass: public foreignOopClass {
     }
 
     bool verify();
-
+    
   friend class proxyMap;
 };

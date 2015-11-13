@@ -7,6 +7,34 @@
 #include "_fctProxyOop.cpp.incl"
 
 
+// Native
+
+oop fctProxyOopClass::allocate_from_bv_prim(byteVectorOop bv){
+    // This primitive copies the contents of the byteVector bv 
+    // into a newly allocated region on the C heap and stores
+    // a pointer to it in the proxy. It also marks the memory
+    // as being executable so that we can later call it.
+    
+  // Allocate and copy 
+  char* b =         bv->bytes();
+  int   l = (int)   bv->length();
+  char* m = (char*) malloc(l);
+  if (m==NULL) exit (1);  
+  memcpy(m, b, l);
+  
+  // Mark as executable
+  const int pagesize = 0x1000;
+  mprotect((void *)((int)m & ~(pagesize - 1)), pagesize, PROT_READ|PROT_WRITE|PROT_EXEC);
+  
+  // Set pointer
+  foreignOopClass::set_pointer((void*)m);
+  
+  // Set a type_seal so we are live
+  set_type_seal((void *)0);
+
+  return this;
+}
+
 
 smi fctProxyOopClass::get_noOfArgs_prim(void *FH) {
   if (!is_live()) {
