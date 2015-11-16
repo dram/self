@@ -136,28 +136,82 @@ primitives. It should be low level.\x7fModuleInfo: Creator: globals native.
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
          'ModuleInfo: Module: native InitialContents: FollowSlot'
         
-         recompile = ( |
+         recompileIfFail: fb = ( |
             | 
-            compiled: cCompile: source IfFail: [|:e| error: e]).
+            compiled: cCompile: source IfFail: [|:e| fb value: e]).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
          'ModuleInfo: Module: native InitialContents: FollowSlot'
         
-         reload = ( |
+         reloadIfFail: fb = ( |
              b.
             | 
-            compiled isEmpty ifTrue: [recompile].
+            compiled isEmpty ifTrue: [recompileIfFail: [|:e| ^ fb value: e]].
             nativeCode: fctProxy copy.
-            nativeCode _AllocateBytes: compiled size.
-            [nativeCode _GetSizeOfAllocatedMemory = compiled size] assert.
-            nativeCode _LoadByteVector: compiled AtOffset: 0.
+            nativeCode _AllocateBytes: compiled size IfFail: [|:e| ^ fb value: 'Native Recompile Error: Couldn\'t allocate storage'].
+            [nativeCode _GetSizeOfAllocatedMemory = compiled size] ifFalse: [|:e| ^ fb value: 'Native Recompile Error: Size error'].
+            nativeCode _LoadByteVector: compiled AtOffset: 0 IfFail: [|:e| ^ fb value: 'Native Recompile Error: Couldn\'t load byteVector'].
             b: byteVector copySize: nativeCode _GetSizeOfAllocatedMemory.
             nativeCode _ReadByteVector: b AtOffset: 0.
-            [b = compiled] assert.
+            [b = compiled] ifFalse: [ ^ fb value: 'Native Recompile Error: Storage failed'].
             nativeCode _NoOfArgs: arity.
-            [nativeCode _NoOfArgs = arity] assert.
-            [nativeCode isLive] assert.
+            [nativeCode _NoOfArgs = arity] ifFalse: [ ^ fb value: 'Native Recompile Error: Arity storage error'].
+            [nativeCode isLive] ifFalse: [ ^ fb value: 'Native Recompile Error: Compiled code not live'].
+            self).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         runNativeIfFail: fb = ( |
+            | 
+            nativeCode _RunNativeIfFail: [
+              reloadIfFail: [^ fb value: e].
+              nativeCode _RunNativeIfFail: [|:e | ^ fb value: e]].
+            self).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         runNativeWith: a IfFail: fb = ( |
+            | 
+            nativeCode _RunNativeWith: a Type: a nativeTypeDescriptor IfFail: [
+              reloadIfFail: [^ fb value: e].
+              nativeCode _RunNativeWith: a Type: a nativeTypeDescriptor IfFail: [|:e | ^ fb value: e]].
+            self).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         runNativeWith: a With: b IfFail: fb = ( |
+            | 
+            nativeCode _RunNativeWith: a  Type: a nativeTypeDescriptor 
+                                 With: b Type: b nativeTypeDescriptor
+                               IfFail: [
+                      reloadIfFail: [^ fb value: e].
+                       nativeCode _RunNativeWith: a  Type: a nativeTypeDescriptor 
+                                            With: b Type: b nativeTypeDescriptor
+                                          IfFail: [|:e | ^ fb value: e]].
+            self).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         runNativeWith: a With: b With: c IfFail: fb = ( |
+            | 
+            nativeCode _RunNativeWith: a  Type: a nativeTypeDescriptor 
+                                 With: b Type: b nativeTypeDescriptor
+                                 With: c Type: c nativeTypeDescriptor
+                               IfFail: [
+                      reloadIfFail: [^ fb value: e].
+                       nativeCode _RunNativeWith: a Type: a nativeTypeDescriptor 
+                                            With: b Type: b nativeTypeDescriptor
+                                            With: c Type: c nativeTypeDescriptor
+                                          IfFail: [|:e | ^ fb value: e]].
             self).
         } | ) 
 
