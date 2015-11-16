@@ -29,6 +29,7 @@ class proxyOopClass: public foreignOopClass {
   private:
 
     C_pointer  type_seal;               // type of object in C heap pointed to by my parent
+    smi        size_of_allocated_memory;
 
   protected:
 
@@ -49,6 +50,13 @@ class proxyOopClass: public foreignOopClass {
     }
 
   public:
+      
+    oop allocate_bytes_prim(smi l, void *FH);
+    oop load_bytevector_at_offset_prim(byteVectorOop bv, smi offset, void *FH);
+    oop read_bytevector_at_offset_prim(byteVectorOop bv, smi offset, void *FH);
+    smi get_size_of_allocated_memory_prim(void *FH);
+    char* bytes(fint which = 0) { return (char*) get_pointer() + which; } // For polymorphism with byteVector
+    
     void* get_type_seal() { 
       return addr()->type_seal.get();
     }

@@ -65,6 +65,7 @@ defaultPreferences
 debugger
 prompt
 int32and64
+native
 systemLog
 '.
         } | ) 
@@ -83,6 +84,7 @@ systemLog
  bootstrap read: 'prompt' From: 'core'
  bootstrap read: 'int32and64' From: 'core'
  bootstrap read: 'systemLog' From: 'core'
+ bootstrap read: 'native' From: 'core'
 
 
 

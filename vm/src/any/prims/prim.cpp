@@ -233,11 +233,11 @@ static PrimDesc fntable1[] = {
  "of objects change upon scavenges and garbage collections)."
 },
 {
-"AllocateFromByteVector:",fntype(&allocate_from_bv_glue),
+"AllocateBytes:",fntype(&allocate_bytes_glue),
  ExternalPrimitive, UnknownPrimType,
  SIDEEFFECTS,
- "Returns the receiver (a proxy, usually a fctProxy) with a pointer to a "
- "memory block containing a copy of the byteVector contents. "
+ "Returns the receiver (a proxy or fctProxy) with a pointer to a "
+ "memory block of the requested size. "
 },
 {
 "AnnotateSpyLog", fntype(&SelfMonitor::annotateLog_prim),
@@ -1006,7 +1006,14 @@ fntype(&call_and_convert5_glue),
  ExternalPrimitive, ReceiverPrimType,
  SAFE_SIDEEFFECTS,
  "Flush unused methods from the compiled code cache."
-},
+}, 
+{
+"GetSizeOfAllocatedMemory", fntype(&get_size_of_allocated_memory_glue),
+ ExternalPrimitive, ReceiverPrimType,
+ SIDEEFFECTS,
+ "Receiver is a proxy or fctProxy pointing to a region of memory on the "
+ "c heap. Returns the size of the memory region. "
+}, 
 {
 "MarkCodeUnused", fntype(&markAllUnused_prim_glue),
  ExternalPrimitive, ReceiverPrimType,
@@ -1206,6 +1213,14 @@ fntype(&call_and_convert5_glue),
  true, true, false, true,  false, false, // SIDEEFFECTS & CAN_CAUSE_SCAVENGE
  "Receiver is a process (not the current process or the scheduler); "
  "argument is the number of activations to kill."
+},
+{
+"LoadByteVector:AtOffset:", fntype(&load_bytevector_at_offset_glue),
+ ExternalPrimitive, UnknownPrimType,
+ SIDEEFFECTS,
+ "Receiver is a proxy or fctProxy pointing to an allocated "
+ "memory region on the c heap. Loads the given bytevector at "
+ "the requested offset."
 },
 {
 "Manufacturer", fntype(&manufacturer_prim_glue),
@@ -2037,6 +2052,14 @@ fntype(&call_and_convert5_glue),
  "VM prompt).  The state of the world is not saved."
 },
 {
+"ReadByteVector:AtOffset:", fntype(&read_bytevector_at_offset_glue),
+ ExternalPrimitive, UnknownPrimType,
+ SIDEEFFECTS,
+ "Receiver is a proxy or fctProxy pointing to an allocated "
+ "memory region on the c heap. Reads from the region at the "
+ "the requested offset into the given bytevector."
+},
+{
 "RecompileLimits", fntype(&get_recompile_limits_prim_glue),
  ExternalPrimitive, ObjVectorPrimType,
  NOSIDEEFFECTS,
@@ -2082,6 +2105,33 @@ fntype(&call_and_convert5_glue),
  false, true, false, true, true, true,
  "Restart the current method, i.e., jump to the beginning of the "
  "method.  Used to implement looping in blocks."
+},
+{
+"RunNative", fntype(&run0_glue),
+ ExternalPrimitive, UnknownPrimType,
+ SIDEEFFECTS,
+ "Runs the code linked from the fctProxy and returns self. "
+},
+{
+"RunNativeWith:Type:", fntype(&run1_glue),
+ ExternalPrimitive, UnknownPrimType,
+ SIDEEFFECTS,
+ "Runs the code linked from the fctProxy with either a byteVector "
+ "(type 0) or a proxy (type 1) as an argument. Returns self. "
+},
+{
+"RunNativeWith:Type:With:Type:", fntype(&run2_glue),
+ ExternalPrimitive, UnknownPrimType,
+ SIDEEFFECTS,
+ "Runs the code linked from the fctProxy with either a byteVector "
+ "(type 0) or a proxy (type 1) as arguments. Returns self. "
+},
+{
+"RunNativeWith:Type:With:Type:With:Type", fntype(&run3_glue),
+ ExternalPrimitive, UnknownPrimType,
+ SIDEEFFECTS,
+ "Runs the code linked from the fctProxy with either a byteVector "
+ "(type 0) or a proxy (type 1) as arguments. Returns self. "
 },
 {
 "RunScript", fntype(&run_script_prim_glue),
