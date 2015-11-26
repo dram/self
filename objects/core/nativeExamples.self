@@ -75,66 +75,6 @@ SlotsToOmit: directory fileInTimeString myComment postFileIn revision subpartNam
             | ) .
         } | ) 
 
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'addChars' -> () From: ( | {
-         'Comment: Add two chars together and return result\x7fModuleInfo: Module: nativeExamples InitialContents: FollowSlot\x7fVisibility: public'
-        
-         add: a And: b IfFail: fb = ( |
-             left.
-             right.
-            | 
-            left: (byteVector copySize: 1) writeByte: a.
-            right: (byteVector copySize: 1) writeByte: b.
-            runNativeWith: left With: right IfFail: [|:e| ^ fb value: e].
-            left readByte).
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'addChars' -> () From: ( | {
-         'Category: state\x7fModuleInfo: Module: nativeExamples InitialContents: FollowSlot'
-        
-         arity = 2.
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'addChars' -> () From: ( | {
-         'Category: caches\x7fModuleInfo: Module: nativeExamples InitialContents: InitializeToExpression: (byteVector copy)'
-        
-         compiled <- byteVector copy.
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'addChars' -> () From: ( | {
-         'Category: caches\x7fModuleInfo: Module: nativeExamples InitialContents: InitializeToExpression: (fctProxy copy)'
-        
-         nativeCode <- fctProxy copy.
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'addChars' -> () From: ( | {
-         'ModuleInfo: Module: nativeExamples InitialContents: FollowSlot'
-        
-         parent* = bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> ().
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'addChars' -> () From: ( | {
-         'Category: state\x7fModuleInfo: Module: nativeExamples InitialContents: FollowSlot'
-        
-         source = '
-  char add(char, char);
-
-  void fct(char *a, char *b){
-    *a = add(*a, *b);
-  }
-
-  char add(char a, char b) {
-    return a + b;
-  }
-'.
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'addChars' -> () From: ( | {
-         'ModuleInfo: Module: nativeExamples InitialContents: FollowSlot\x7fVisibility: public'
-        
-         test = ( |
-            | [(add: 3 And: 4 IfFail: -1) = 7] assert. self).
-        } | ) 
-
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> () From: ( | {
          'Category: examples\x7fModuleInfo: Module: nativeExamples InitialContents: FollowSlot'
         
@@ -204,58 +144,10 @@ SlotsToOmit: directory fileInTimeString myComment postFileIn revision subpartNam
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> () From: ( | {
          'Category: examples\x7fModuleInfo: Module: nativeExamples InitialContents: FollowSlot'
         
-         nothing <- bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'native' -> 'nothing' -> () From: ( |
+         nothing = bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'native' -> 'nothing' -> () From: ( |
              {} = 'ModuleInfo: Creator: globals native nothing.
 '.
             | ) .
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'nothing' -> () From: ( | {
-         'Category: state\x7fModuleInfo: Module: nativeExamples InitialContents: FollowSlot'
-        
-         arity = 0.
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'nothing' -> () From: ( | {
-         'Category: caches\x7fModuleInfo: Module: nativeExamples InitialContents: InitializeToExpression: (byteVector copy)'
-        
-         compiled <- byteVector copy.
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'nothing' -> () From: ( | {
-         'Category: caches\x7fModuleInfo: Module: nativeExamples InitialContents: InitializeToExpression: (fctProxy copy)'
-        
-         nativeCode <- fctProxy copy.
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'nothing' -> () From: ( | {
-         'ModuleInfo: Module: nativeExamples InitialContents: FollowSlot'
-        
-         parent* = bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> ().
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'nothing' -> () From: ( | {
-         'ModuleInfo: Module: nativeExamples InitialContents: FollowSlot\x7fVisibility: public'
-        
-         safelyDoNothingIfFail: fb = ( |
-            | 
-            runNativeIfFail: fb. self).
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'nothing' -> () From: ( | {
-         'Category: state\x7fModuleInfo: Module: nativeExamples InitialContents: FollowSlot'
-        
-         source = '
-  void fct(){2 + 2;}  
-'.
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'nothing' -> () From: ( | {
-         'ModuleInfo: Module: nativeExamples InitialContents: FollowSlot\x7fVisibility: public'
-        
-         test = ( |
-            | 
-            [(safelyDoNothingIfFail: '') = self] assert. self).
         } | ) 
 
 

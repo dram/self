@@ -1,8 +1,9 @@
  'Sun-$Revision: 30.12 $'
  '
-Copyright 1992-2012 AUTHORS.
-See the LICENSE file for license information.
+Copyright 1992-2014 AUTHORS.
+See the legal/LICENSE file for license information and legal/AUTHORS for authors.
 '
+["preFileIn" self] value
 
 
  '-- Module body'
@@ -25,7 +26,7 @@ See the LICENSE file for license information.
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> () From: ( | {
-         'Category: platform\x7fCategory: external libraries\x7fModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: public'
+         'Category: platform\x7fCategory: native code\x7fCategory: external libraries\x7fModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: public'
         
          foreignCode = bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'foreignCode' -> () From: ( |
              {} = 'ModuleInfo: Creator: globals foreignCode.
@@ -107,7 +108,7 @@ Only the linker should clone foreignCode objects.\x7fModuleInfo: Creator: traits
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> () From: ( | {
-         'Category: platform\x7fCategory: external libraries\x7fModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: public'
+         'Category: platform\x7fCategory: native code\x7fCategory: external libraries\x7fModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: public'
         
          foreignCodeDB = bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'foreignCodeDB' -> () From: ( |
              {} = 'Comment: foreignCode objects must be globally unique given the path name.
@@ -336,7 +337,7 @@ file, return nil.\x7fModuleInfo: Module: foreign InitialContents: FollowSlot\x7f
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> () From: ( | {
-         'Category: platform\x7fCategory: external libraries\x7fModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: public'
+         'Category: platform\x7fCategory: native code\x7fCategory: external libraries\x7fModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: public'
         
          foreignFct = bootstrap define: bootstrap stub -> 'globals' -> 'foreignFct' -> () ToBe: bootstrap addSlotsTo: (
              bootstrap remove: 'parent' From:
@@ -406,21 +407,21 @@ SlotsToOmit: parent.
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> () From: ( | {
-         'Category: platform\x7fCategory: external libraries\x7fModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: public'
+         'Category: platform\x7fCategory: native code\x7fCategory: external libraries\x7fModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: public'
         
-         sunLinker = bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'sunLinker' -> () From: ( |
+         posixLinker = bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'posixLinker' -> () From: ( |
              {} = 'Comment: An implementation of a linker object based on the Sun OS linker ld.so:
      All the methods in this object are pseudo-private. They should not be
      accessed directly, since this would break the higher level protocols 
-     defined in foreignCode, foreignFct and foreignCodeDB.\x7fModuleInfo: Creator: globals sunLinker.
+     defined in foreignCode, foreignFct and foreignCodeDB.\x7fModuleInfo: Creator: globals posixLinker.
 '.
             | ) .
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> () From: ( | {
-         'Category: platform\x7fCategory: external libraries\x7fComment: THE linker\x7fModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: public'
+         'Category: platform\x7fCategory: native code\x7fCategory: external libraries\x7fComment: THE linker\x7fModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: public'
         
-         linker = bootstrap stub -> 'globals' -> 'sunLinker' -> ().
+         linker = bootstrap stub -> 'globals' -> 'posixLinker' -> ().
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'modules' -> () From: ( | {
@@ -600,110 +601,6 @@ SlotsToOmit: directory fileInTimeString myComment postFileIn revision subpartNam
          'ModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: private'
         
          parent* = bootstrap stub -> 'traits' -> 'proxy' -> ().
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'sunLinker' -> () From: ( | {
-         'ModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: private'
-        
-         canUnload = ( |
-            | 
-            "Release 4.1.1 of SunOS has a buggy dynamic linker - unload does
-             not work, unless a patch has been installed. If this patch has
-             been installed on your system, change this line to reflect it."
-            os release >= '4.1.2').
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'sunLinker' -> () From: ( | {
-         'Comment: Set true to generate test output.\x7fModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: private'
-        
-         debug = bootstrap stub -> 'globals' -> 'false' -> ().
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'sunLinker' -> () From: ( | {
-         'Comment: _\x7fModuleInfo: Module: foreign InitialContents: FollowSlot'
-        
-         initialize = ( |
-            | 
-            debug ifTrue: [ 'sunLinker initialize' printLine. ]).
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'sunLinker' -> () From: ( | {
-         'Comment: _\x7fModuleInfo: Module: foreign InitialContents: FollowSlot'
-        
-         loadPath: fpath IfFail: errBlk = ( |
-             handle <- bootstrap stub -> 'globals' -> 'proxy' -> ().
-             rec.
-            | 
-            debug ifTrue: [ ('sunLinker loadPath: ', fpath) printLine. ].
-            fpath = '' ifTrue: [ rec: 0. ]
-                        False: [ rec: fpath asVMByteVector ].
-            "If the scheduler is running _Dlopen has to be wrapped with
-             unixGlobals os_file stopAsync and startAsync to avoid undefined status of
-             stdin, stdout, and stderr in case the dynamic linker decides to 
-             abort this unix process. April 92, LB"
-            scheduler isRunning ifTrue: [ os_file stopAsync ].
-            handle: rec _Dlopen: 1 ResultProxy: proxy deadCopy IfFail: [|:e|
-                scheduler isRunning ifTrue: [ os_file startAsync ].
-                ^errBlk value: e].
-            scheduler isRunning ifTrue: [ os_file startAsync ].
-            handle).
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'sunLinker' -> () From: ( | {
-         'Comment: _\x7fModuleInfo: Module: foreign InitialContents: FollowSlot'
-        
-         lookupFunction: entry Path: fpath Handle: handle ResultProxy: rp IfFail: errBlk = ( |
-            | 
-            debug ifTrue: [ ('sunLinker lookupFunction: ', entry) printLine. ].
-            handle _FctLookup: entry asVMByteVector ResultProxy: rp IfFail: errBlk).
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'sunLinker' -> () From: ( | {
-         'Comment: _\x7fModuleInfo: Module: foreign InitialContents: FollowSlot'
-        
-         lookupSymbol: symbol Path: fpath Handle: handle ResultProxy: rp IfFail: errBlk = ( |
-            | 
-            debug ifTrue: [ ('sunLinker lookupSymbol: ', entry) printLine. ].
-            handle _Dlsym: symbol asVMByteVector ResultProxy: rp IfFail: errBlk).
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'sunLinker' -> () From: ( | {
-         'Comment: _\x7fModuleInfo: Module: foreign InitialContents: FollowSlot'
-        
-         noOfArgsFunction: entry Path: fpath Handle: handle IfFail: errBlk = ( |
-            | 
-            handle _NoOfArgsFct: entry asVMByteVector IfFail: errBlk).
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'sunLinker' -> () From: ( | {
-         'ModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: private'
-        
-         parent* = bootstrap stub -> 'traits' -> 'oddball' -> ().
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'sunLinker' -> () From: ( | {
-         'Comment: _\x7fModuleInfo: Module: foreign InitialContents: FollowSlot'
-        
-         shutdown = ( |
-            | 
-            debug ifTrue: [ 'sunLinker shutdown' printLine. ]).
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'sunLinker' -> () From: ( | {
-         'Comment: _\x7fModuleInfo: Module: foreign InitialContents: FollowSlot'
-        
-         unloadPath: fpath Handle: handle IfFail: errBlk = ( |
-            | 
-            debug ifTrue: [ ('sunLinker unloadPath: ', fpath) printLine. ].
-            canUnload ifTrue: [
-                handle _DlcloseIfFail: errBlk.
-            ] False: [
-                ^ errBlk value: 'Warning: Unless a patch has been installed, ',
-                                'the dynamic linker in SunOS\n',
-                                'release 4.1.1 (and earlier) ', 
-                                'can not unload libraries --\n',
-                                'not unloading ', fpath, '.'.
-            ]).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'traits' -> 'fctProxy' -> () From: ( | {

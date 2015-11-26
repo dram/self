@@ -70,7 +70,7 @@ SlotsToOmit: directory fileInTimeString myComment postFileIn revision subpartNam
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> () From: ( | {
-         'Category: platform\x7fCategory: host and filesystem\x7fModuleInfo: Module: native InitialContents: FollowSlot\x7fVisibility: public'
+         'Category: platform\x7fCategory: native code\x7fModuleInfo: Module: native InitialContents: FollowSlot\x7fVisibility: public'
         
          native = bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'native' -> () From: ( |
              {} = 'Comment: I contain native code!
@@ -81,56 +81,19 @@ primitives. It should be low level.\x7fModuleInfo: Creator: globals native.
             | ) .
         } | ) 
 
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> () From: ( | {
-         'Category: support\x7fModuleInfo: Module: native InitialContents: FollowSlot'
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
+         'Category: external libraries\x7fModuleInfo: Module: native InitialContents: FollowSlot'
         
-         support = bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'native' -> 'support' -> () From: ( |
-             {} = 'ModuleInfo: Creator: globals native support.
-'.
-            | ) .
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> () From: ( | {
-         'ModuleInfo: Module: native InitialContents: FollowSlot'
-        
-         cNativeParent = bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( |
-             {} = 'ModuleInfo: Creator: globals native support cNativeParent.
-'.
-            | ) .
+         proxyForFunction: s Library: l IfFail: fb = ( |
+            | (proxyForLibrary: l IfFail: [^ fb value: 'Cannot find shared library']) lookupFunction: s IfFail: [^ fb value: 'Cannot find function']).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
-         'ModuleInfo: Module: native InitialContents: FollowSlot'
+         'Category: external libraries\x7fModuleInfo: Module: native InitialContents: FollowSlot'
         
-         cCompile: c IfFail: fb = ( |
-             f.
-             fn.
-             rawByteVector.
+         proxyForLibrary: l IfFail: fb = ( |
             | 
-            os command: 'cc' IfFail: [^ fb value: 'C Compiler Not Found'].
-
-            fn: os_file temporaryFileName.
-            os command: 'rm ', fn, '.c'.
-            os command: 'rm ', fn, '.o'.
-
-            f: os_file openForWriting: fn, '.c'.
-            f write: c.
-            f close.
-
-            os command: 'cc -O2 -ffreestanding -m32 -c -o ', fn, '.o ', fn, '.c'  IfFail: [|:e| error: e].
-
-            f: os_file openForReading: fn, '.o'.
-            rawByteVector: f read asByteVector.
-            f close.
-
-            rawByteVector: rawByteVector copyFrom: 16r100 UpTo: rawByteVector size. "Ignore header"
-            rawByteVector).
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
-         'ModuleInfo: Module: native InitialContents: FollowSlot'
-        
-         parent* = bootstrap stub -> 'traits' -> 'oddball' -> ().
+            foreignCodeDB at: l IfFail: [^ fb value: 'Could not load library']).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
@@ -138,7 +101,8 @@ primitives. It should be low level.\x7fModuleInfo: Creator: globals native.
         
          recompileIfFail: fb = ( |
             | 
-            compiled: cCompile: source IfFail: [|:e| fb value: e]).
+            compiled: byteVector copyRemoveAll.
+            reloadIfFail: [|:e| ^  fb value: e]).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
@@ -147,71 +111,17 @@ primitives. It should be low level.\x7fModuleInfo: Creator: globals native.
          reloadIfFail: fb = ( |
              b.
             | 
-            compiled isEmpty ifTrue: [recompileIfFail: [|:e| ^ fb value: e]].
+            compiled isEmpty ifTrue: [compiled: cCompile: source IfFail: [|:e| ^ fb value: e]].
             nativeCode: fctProxy copy.
             nativeCode _AllocateBytes: compiled size IfFail: [|:e| ^ fb value: 'Native Recompile Error: Couldn\'t allocate storage'].
-            [nativeCode _GetSizeOfAllocatedMemory = compiled size] ifFalse: [|:e| ^ fb value: 'Native Recompile Error: Size error'].
+            (nativeCode _GetSizeOfAllocatedMemory = compiled size) ifFalse: [|:e| ^ fb value: 'Native Recompile Error: Size error'].
             nativeCode _LoadByteVector: compiled AtOffset: 0 IfFail: [|:e| ^ fb value: 'Native Recompile Error: Couldn\'t load byteVector'].
             b: byteVector copySize: nativeCode _GetSizeOfAllocatedMemory.
             nativeCode _ReadByteVector: b AtOffset: 0.
-            [b = compiled] ifFalse: [ ^ fb value: 'Native Recompile Error: Storage failed'].
+            (b = compiled) ifFalse: [ ^ fb value: 'Native Recompile Error: Storage failed'].
             nativeCode _NoOfArgs: arity.
-            [nativeCode _NoOfArgs = arity] ifFalse: [ ^ fb value: 'Native Recompile Error: Arity storage error'].
-            [nativeCode isLive] ifFalse: [ ^ fb value: 'Native Recompile Error: Compiled code not live'].
-            self).
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
-         'ModuleInfo: Module: native InitialContents: FollowSlot'
-        
-         runNativeIfFail: fb = ( |
-            | 
-            nativeCode _RunNativeIfFail: [
-              reloadIfFail: [^ fb value: e].
-              nativeCode _RunNativeIfFail: [|:e | ^ fb value: e]].
-            self).
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
-         'ModuleInfo: Module: native InitialContents: FollowSlot'
-        
-         runNativeWith: a IfFail: fb = ( |
-            | 
-            nativeCode _RunNativeWith: a Type: a nativeTypeDescriptor IfFail: [
-              reloadIfFail: [^ fb value: e].
-              nativeCode _RunNativeWith: a Type: a nativeTypeDescriptor IfFail: [|:e | ^ fb value: e]].
-            self).
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
-         'ModuleInfo: Module: native InitialContents: FollowSlot'
-        
-         runNativeWith: a With: b IfFail: fb = ( |
-            | 
-            nativeCode _RunNativeWith: a  Type: a nativeTypeDescriptor 
-                                 With: b Type: b nativeTypeDescriptor
-                               IfFail: [
-                      reloadIfFail: [^ fb value: e].
-                       nativeCode _RunNativeWith: a  Type: a nativeTypeDescriptor 
-                                            With: b Type: b nativeTypeDescriptor
-                                          IfFail: [|:e | ^ fb value: e]].
-            self).
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
-         'ModuleInfo: Module: native InitialContents: FollowSlot'
-        
-         runNativeWith: a With: b With: c IfFail: fb = ( |
-            | 
-            nativeCode _RunNativeWith: a  Type: a nativeTypeDescriptor 
-                                 With: b Type: b nativeTypeDescriptor
-                                 With: c Type: c nativeTypeDescriptor
-                               IfFail: [
-                      reloadIfFail: [^ fb value: e].
-                       nativeCode _RunNativeWith: a Type: a nativeTypeDescriptor 
-                                            With: b Type: b nativeTypeDescriptor
-                                            With: c Type: c nativeTypeDescriptor
-                                          IfFail: [|:e | ^ fb value: e]].
+            (nativeCode _NoOfArgs = arity) ifFalse: [ ^ fb value: 'Native Recompile Error: Arity storage error'].
+            (nativeCode isLive) ifFalse: [ ^ fb value: 'Native Recompile Error: Compiled code not live'].
             self).
         } | ) 
 
@@ -232,7 +142,9 @@ primitives. It should be low level.\x7fModuleInfo: Creator: globals native.
          'Category: C types\x7fCategory: Simple accessing for native\x7fModuleInfo: Module: native InitialContents: FollowSlot'
         
          readInt32 = ( |
-            | cIntSize: 32 Signed: false At: 0 IfFail: [error: 'Bad Int']).
+            | 
+             cIntSize: 32 Signed: false At: 0 IfFail: [
+            (65536 * cIntSize: 16 Signed: false At: 0) + (cIntSize: 16 Signed: false At: 2)]).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'traits' -> 'byteVector' -> () From: ( | {
@@ -272,6 +184,7 @@ Very dangerous - use with care.\x7fModuleInfo: Module: native InitialContents: F
  '-- Sub parts'
 
  bootstrap read: 'nativeExamples' From: 'core'
+ bootstrap read: 'nativeLibSodium' From: 'core'
 
 
 
