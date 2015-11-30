@@ -419,7 +419,7 @@ SlotsToOmit: parent.
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> () From: ( | {
-         'Category: platform\x7fCategory: native code\x7fCategory: external libraries\x7fComment: THE linker\x7fModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: public'
+         'Category: platform\x7fCategory: native code\x7fCategory: external libraries\x7fComment: THE linker\x7fModuleInfo: Module: foreign InitialContents: InitializeToExpression: (posixLinker)\x7fVisibility: public'
         
          linker = bootstrap stub -> 'globals' -> 'posixLinker' -> ().
         } | ) 
@@ -584,6 +584,110 @@ SlotsToOmit: directory fileInTimeString myComment postFileIn revision subpartNam
          'ModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: private'
         
          subpartNames <- ''.
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'posixLinker' -> () From: ( | {
+         'ModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: private'
+        
+         canUnload = ( |
+            | 
+            "Release 4.1.1 of SunOS has a buggy dynamic linker - unload does
+             not work, unless a patch has been installed. If this patch has
+             been installed on your system, change this line to reflect it."
+            os release >= '4.1.2').
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'posixLinker' -> () From: ( | {
+         'Comment: Set true to generate test output.\x7fModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: private'
+        
+         debug = bootstrap stub -> 'globals' -> 'false' -> ().
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'posixLinker' -> () From: ( | {
+         'Comment: _\x7fModuleInfo: Module: foreign InitialContents: FollowSlot'
+        
+         initialize = ( |
+            | 
+            debug ifTrue: [ 'sunLinker initialize' printLine. ]).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'posixLinker' -> () From: ( | {
+         'Comment: _\x7fModuleInfo: Module: foreign InitialContents: FollowSlot'
+        
+         loadPath: fpath IfFail: errBlk = ( |
+             handle <- bootstrap stub -> 'globals' -> 'proxy' -> ().
+             rec.
+            | 
+            debug ifTrue: [ ('sunLinker loadPath: ', fpath) printLine. ].
+            fpath = '' ifTrue: [ rec: 0. ]
+                        False: [ rec: fpath asVMByteVector ].
+            "If the scheduler is running _Dlopen has to be wrapped with
+             unixGlobals os_file stopAsync and startAsync to avoid undefined status of
+             stdin, stdout, and stderr in case the dynamic linker decides to 
+             abort this unix process. April 92, LB"
+            scheduler isRunning ifTrue: [ os_file stopAsync ].
+            handle: rec _Dlopen: 1 ResultProxy: proxy deadCopy IfFail: [|:e|
+                scheduler isRunning ifTrue: [ os_file startAsync ].
+                ^errBlk value: e].
+            scheduler isRunning ifTrue: [ os_file startAsync ].
+            handle).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'posixLinker' -> () From: ( | {
+         'Comment: _\x7fModuleInfo: Module: foreign InitialContents: FollowSlot'
+        
+         lookupFunction: entry Path: fpath Handle: handle ResultProxy: rp IfFail: errBlk = ( |
+            | 
+            debug ifTrue: [ ('sunLinker lookupFunction: ', entry) printLine. ].
+            handle _FctLookup: entry asVMByteVector ResultProxy: rp IfFail: errBlk).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'posixLinker' -> () From: ( | {
+         'Comment: _\x7fModuleInfo: Module: foreign InitialContents: FollowSlot'
+        
+         lookupSymbol: symbol Path: fpath Handle: handle ResultProxy: rp IfFail: errBlk = ( |
+            | 
+            debug ifTrue: [ ('sunLinker lookupSymbol: ', entry) printLine. ].
+            handle _Dlsym: symbol asVMByteVector ResultProxy: rp IfFail: errBlk).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'posixLinker' -> () From: ( | {
+         'Comment: _\x7fModuleInfo: Module: foreign InitialContents: FollowSlot'
+        
+         noOfArgsFunction: entry Path: fpath Handle: handle IfFail: errBlk = ( |
+            | 
+            handle _NoOfArgsFct: entry asVMByteVector IfFail: errBlk).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'posixLinker' -> () From: ( | {
+         'ModuleInfo: Module: foreign InitialContents: FollowSlot\x7fVisibility: private'
+        
+         parent* = bootstrap stub -> 'traits' -> 'oddball' -> ().
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'posixLinker' -> () From: ( | {
+         'Comment: _\x7fModuleInfo: Module: foreign InitialContents: FollowSlot'
+        
+         shutdown = ( |
+            | 
+            debug ifTrue: [ 'sunLinker shutdown' printLine. ]).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'posixLinker' -> () From: ( | {
+         'Comment: _\x7fModuleInfo: Module: foreign InitialContents: FollowSlot'
+        
+         unloadPath: fpath Handle: handle IfFail: errBlk = ( |
+            | 
+            debug ifTrue: [ ('sunLinker unloadPath: ', fpath) printLine. ].
+            canUnload ifTrue: [
+                handle _DlcloseIfFail: errBlk.
+            ] False: [
+                ^ errBlk value: 'Warning: Unless a patch has been installed, ',
+                                'the dynamic linker in SunOS\n',
+                                'release 4.1.1 (and earlier) ', 
+                                'can not unload libraries --\n',
+                                'not unloading ', fpath, '.'.
+            ]).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'traits' -> () From: ( | {

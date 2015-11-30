@@ -1,9 +1,9 @@
- ''
+ '0.1.0'
  '
 Copyright 1992-2014 AUTHORS.
 See the legal/LICENSE file for license information and legal/AUTHORS for authors.
 '
-[ resend.preFileIn] value
+["preFileIn" self] value
 
 
  '-- Module body'
@@ -16,6 +16,7 @@ See the legal/LICENSE file for license information and legal/AUTHORS for authors
              bootstrap remove: 'fileInTimeString' From:
              bootstrap remove: 'myComment' From:
              bootstrap remove: 'postFileIn' From:
+             bootstrap remove: 'preFileIn' From:
              bootstrap remove: 'revision' From:
              bootstrap remove: 'subpartNames' From:
              globals modules init copy ) From: bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'modules' -> 'nativeLibSodium' -> () From: ( |
@@ -23,7 +24,7 @@ See the legal/LICENSE file for license information and legal/AUTHORS for authors
 
 CopyDowns:
 globals modules init. copy 
-SlotsToOmit: directory fileInTimeString myComment postFileIn revision subpartNames.
+SlotsToOmit: directory fileInTimeString myComment postFileIn preFileIn revision subpartNames.
 
 \x7fIsComplete: '.
             | ) .
@@ -51,13 +52,21 @@ SlotsToOmit: directory fileInTimeString myComment postFileIn revision subpartNam
          'ModuleInfo: Module: nativeLibSodium InitialContents: FollowSlot'
         
          postFileIn = ( |
-            | resend.postFileIn).
+            | 
+            "postFileIn" self).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'modules' -> 'nativeLibSodium' -> () From: ( | {
-         'ModuleInfo: Module: nativeLibSodium InitialContents: InitializeToExpression: (\'30.20.0-prerelease2\')\x7fVisibility: public'
+         'ModuleInfo: Module: nativeLibSodium InitialContents: FollowSlot'
         
-         revision <- '30.20.0-prerelease2'.
+         preFileIn = ( |
+            | "preFileIn" self).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'modules' -> 'nativeLibSodium' -> () From: ( | {
+         'ModuleInfo: Module: nativeLibSodium InitialContents: InitializeToExpression: (\'0.1.0\')\x7fVisibility: public'
+        
+         revision <- '0.1.0'.
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'modules' -> 'nativeLibSodium' -> () From: ( | {
@@ -103,6 +112,13 @@ SlotsToOmit: directory fileInTimeString myComment postFileIn revision subpartNam
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'libsodium' -> 'randombytes_random' -> () From: ( | {
+         'ModuleInfo: Module: nativeLibSodium InitialContents: FollowSlot'
+        
+         functionProxyIfFail: fb = ( |
+            | proxyForFunction: 'randombytes_random' Library: '/usr/local/lib/libsodium.dylib' IfFail: [|:e| ^ fb value: e]).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'libsodium' -> 'randombytes_random' -> () From: ( | {
          'Category: caches\x7fModuleInfo: Module: nativeLibSodium InitialContents: InitializeToExpression: (fctProxy copy)'
         
          nativeCode <- fctProxy copy.
@@ -136,13 +152,12 @@ SlotsToOmit: directory fileInTimeString myComment postFileIn revision subpartNam
          'ModuleInfo: Module: nativeLibSodium InitialContents: FollowSlot\x7fVisibility: public'
         
          valueIfFail: fb = ( |
-             b.
             | 
-            b: byteVector copySize: 4.
-            runNativeWith: 
-                   b With: (proxyForFunction: 'randombytes_random' Library: '/usr/local/lib/libsodium.dylib' IfFail: [|:e| ^ fb value: e]) 
-                   IfFail: [|:e| ^ fb value: e].
-            b readInt32).
+            (
+            runNativeReturning: buffer uint32 copy
+                          With: (functionProxyIfFail: [|:e| ^ fb value: e])
+                        IfFail: [|:e| ^ fb value: e].
+            ) read).
         } | ) 
 
 

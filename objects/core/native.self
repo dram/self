@@ -1,4 +1,4 @@
- '$Revision:$'
+ '0.1.0'
  '
 Copyright 1992-2014 AUTHORS.
 See the legal/LICENSE file for license information and legal/AUTHORS for authors.
@@ -56,9 +56,9 @@ SlotsToOmit: directory fileInTimeString myComment postFileIn revision subpartNam
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'modules' -> 'native' -> () From: ( | {
-         'ModuleInfo: Module: native InitialContents: FollowSlot\x7fVisibility: public'
+         'ModuleInfo: Module: native InitialContents: InitializeToExpression: (\'0.1.0\')\x7fVisibility: public'
         
-         revision <- '$Revision:$'.
+         revision <- '0.1.0'.
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'modules' -> 'native' -> () From: ( | {
@@ -79,6 +79,199 @@ This is a replacement for hardcoded
 primitives. It should be low level.\x7fModuleInfo: Creator: globals native.
 '.
             | ) .
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> () From: ( | {
+         'Category: support\x7fModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         support = bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'native' -> 'support' -> () From: ( |
+             {} = 'ModuleInfo: Creator: globals native support.
+'.
+            | ) .
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         buffer = bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> () From: ( |
+             {} = 'ModuleInfo: Creator: globals native support buffer.
+'.
+            | ) .
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         char = bootstrap define: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'char' -> () ToBe: bootstrap addSlotsTo: (
+             bootstrap remove: 'parent' From:
+             globals byteVector copySize_1 ) From: bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'char' -> () From: ( |
+             {} = 'ModuleInfo: Creator: globals native support buffer char.
+
+CopyDowns:
+globals byteVector. copySize_1 
+SlotsToOmit: parent.
+
+\x7fIsComplete: '.
+            | ) .
+        } | ) 
+
+ bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'char' -> () _ByteAt: 0 Put: (
+     0)
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'char' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot\x7fVisibility: private'
+        
+         parent* = bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'char' -> 'parent' -> () From: ( |
+             {} = 'ModuleInfo: Creator: globals native support buffer char parent.
+'.
+            | ) .
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'char' -> 'parent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot\x7fVisibility: private'
+        
+         parent* = bootstrap stub -> 'traits' -> 'byteVector' -> ().
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'char' -> 'parent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         read = ( |
+            | 
+            cIntSize: 8 Signed: false At: 0 IfFail: [error: 'Bad Int']).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'char' -> 'parent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         write: i IfFail: fb = ( |
+            | 
+            ((i > 255) || (i < 0)) ifTrue: [^ fb value: 'Value out of range']. 
+            cIntSize: 8 Signed: false At: 0 Put: i IfFail: [error: 'Bad Int']. self).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'char' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         storeStringNeeds = ( |
+            | native support buffer char).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         uint32 = bootstrap define: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'uint32' -> () ToBe: bootstrap addSlotsTo: (
+             bootstrap remove: 'parent' From:
+             globals byteVector copySize_4 ) From: bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'uint32' -> () From: ( |
+             {} = 'ModuleInfo: Creator: globals native support buffer uint32.
+
+CopyDowns:
+globals byteVector. copySize_4 
+SlotsToOmit: parent.
+
+\x7fIsComplete: '.
+            | ) .
+        } | ) 
+
+ bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'uint32' -> () _ByteAt: 0 Put: (
+     0)
+
+ bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'uint32' -> () _ByteAt: 1 Put: (
+     0)
+
+ bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'uint32' -> () _ByteAt: 2 Put: (
+     0)
+
+ bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'uint32' -> () _ByteAt: 3 Put: (
+     0)
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'uint32' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot\x7fVisibility: private'
+        
+         parent* = bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'uint32' -> 'parent' -> () From: ( |
+             {} = 'ModuleInfo: Creator: globals native support buffer uint32 parent.
+'.
+            | ) .
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'uint32' -> 'parent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot\x7fVisibility: private'
+        
+         parent* = bootstrap stub -> 'traits' -> 'byteVector' -> ().
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'uint32' -> 'parent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot\x7fVisibility: public'
+        
+         read = ( |
+            | 
+            cIntSize: 32 Signed: false At: 0 IfFail: [
+            (65536 * cIntSize: 16 Signed: false At: 0) +
+            (cIntSize: 16 Signed: false At: 2)]).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'uint32' -> 'parent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         write: i IfFail: fb = ( |
+            | 
+            cIntSize: 32 Signed: false At: 0 Put: i IfFail: [error: 'Bad Int']. self).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> 'uint32' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         storeStringNeeds = ( |
+            | native support buffer uint32).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         cNativeParent = bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( |
+             {} = 'ModuleInfo: Creator: globals native support cNativeParent.
+'.
+            | ) .
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
+         'Category: support\x7fComment: for easier access\x7fModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         buffer = bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'buffer' -> ().
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         cCompile: c IfFail: fb = ( |
+             f.
+             fn.
+             rawByteVector.
+            | 
+            os command: 'cc' IfFail: [^ fb value: 'C Compiler Not Found'].
+
+            fn: os_file temporaryFileName.
+            os command: 'rm ', fn, '.c'.
+            os command: 'rm ', fn, '.o'.
+
+            f: os_file openForWriting: fn, '.c'.
+            f write: c.
+            f close.
+
+            os command: 'cc -O2 -ffreestanding -m32 -c -o ', fn, '.o ', fn, '.c'  IfFail: [|:e| error: e].
+
+            f: os_file openForReading: fn, '.o'.
+            rawByteVector: f read asByteVector.
+            f close.
+
+            rawByteVector: rawByteVector copyFrom: 16r100 UpTo: rawByteVector size. "Ignore header"
+            rawByteVector).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         parent* = bootstrap stub -> 'traits' -> 'oddball' -> ().
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
@@ -125,40 +318,78 @@ primitives. It should be low level.\x7fModuleInfo: Creator: globals native.
             self).
         } | ) 
 
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         runNativeIfFail: fb = ( |
+            | 
+            nativeCode _RunNativeIfFail: [
+              reloadIfFail: [^ fb value: e].
+              nativeCode _RunNativeIfFail: [|:e | ^ fb value: e]].
+            self).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         runNativeReturning: b IfFail: fb = ( |
+            | runNativeWith: b IfFail: fb. b).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         runNativeReturning: a With: b IfFail: fb = ( |
+            | runNativeWith: a With: b IfFail: fb. a).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         runNativeWith: a IfFail: fb = ( |
+            | 
+            nativeCode _RunNativeWith: a Type: a nativeTypeDescriptor IfFail: [
+              reloadIfFail: [^ fb value: e].
+              nativeCode _RunNativeWith: a Type: a nativeTypeDescriptor IfFail: [|:e | ^ fb value: e]].
+            self).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         runNativeWith: a With: b IfFail: fb = ( |
+            | 
+            nativeCode _RunNativeWith: a  Type: a nativeTypeDescriptor 
+                                 With: b Type: b nativeTypeDescriptor
+                               IfFail: [
+                      reloadIfFail: [^ fb value: e].
+                       nativeCode _RunNativeWith: a  Type: a nativeTypeDescriptor 
+                                            With: b Type: b nativeTypeDescriptor
+                                          IfFail: [|:e | ^ fb value: e]].
+            self).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'native' -> 'support' -> 'cNativeParent' -> () From: ( | {
+         'ModuleInfo: Module: native InitialContents: FollowSlot'
+        
+         runNativeWith: a With: b With: c IfFail: fb = ( |
+            | 
+            nativeCode _RunNativeWith: a  Type: a nativeTypeDescriptor 
+                                 With: b Type: b nativeTypeDescriptor
+                                 With: c Type: c nativeTypeDescriptor
+                               IfFail: [
+                      reloadIfFail: [^ fb value: e].
+                       nativeCode _RunNativeWith: a Type: a nativeTypeDescriptor 
+                                            With: b Type: b nativeTypeDescriptor
+                                            With: c Type: c nativeTypeDescriptor
+                                          IfFail: [|:e | ^ fb value: e]].
+            self).
+        } | ) 
+
  bootstrap addSlotsTo: bootstrap stub -> 'traits' -> 'byteVector' -> () From: ( | {
          'Category: native\x7fModuleInfo: Module: native InitialContents: FollowSlot'
         
          nativeTypeDescriptor = 0.
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'traits' -> 'byteVector' -> () From: ( | {
-         'Category: C types\x7fCategory: Simple accessing for native\x7fModuleInfo: Module: native InitialContents: FollowSlot'
-        
-         readByte = ( |
-            | cIntSize: 8 Signed: false At: 0 IfFail: [error: 'Bad Int']).
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'traits' -> 'byteVector' -> () From: ( | {
-         'Category: C types\x7fCategory: Simple accessing for native\x7fModuleInfo: Module: native InitialContents: FollowSlot'
-        
-         readInt32 = ( |
-            | 
-             cIntSize: 32 Signed: false At: 0 IfFail: [
-            (65536 * cIntSize: 16 Signed: false At: 0) + (cIntSize: 16 Signed: false At: 2)]).
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'traits' -> 'byteVector' -> () From: ( | {
-         'Category: C types\x7fCategory: Simple accessing for native\x7fModuleInfo: Module: native InitialContents: FollowSlot'
-        
-         writeByte: b = ( |
-            | cIntSize: 8 Signed: false At: 0 Put: b IfFail: [error: 'Bad Int']. self).
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'traits' -> 'byteVector' -> () From: ( | {
-         'Category: C types\x7fCategory: Simple accessing for native\x7fModuleInfo: Module: native InitialContents: FollowSlot'
-        
-         writeInt32: i = ( |
-            | cIntSize: 32 Signed: false At: 0 Put: i IfFail: [error: 'Bad Int']. self).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'traits' -> 'proxy' -> () From: ( | {
