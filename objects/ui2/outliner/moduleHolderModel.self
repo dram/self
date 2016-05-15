@@ -3,6 +3,7 @@
 Copyright 1992-2014 AUTHORS.
 See the legal/LICENSE file for license information and legal/AUTHORS for authors.
 '
+["preFileIn" self] value
 
 
  '-- Module body'
@@ -89,7 +90,7 @@ globals generalModel parent buttonDescriptions. _Clone
         
          menuColor = ( |
             | 
-            preferences outliner colorScheme moduleHolderModelMenuColor).
+            preferences outliner theme moduleHolderModelMenuColor).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'moduleHolderModel' -> 'parent' -> () From: ( | {
@@ -99,11 +100,19 @@ globals generalModel parent buttonDescriptions. _Clone
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'moduleHolderModel' -> 'parent' -> () From: ( | {
+         'Category: appearance\x7fModuleInfo: Module: moduleHolderModel InitialContents: FollowSlot'
+        
+         preferredBodyColor = ( |
+            | 
+            preferences outliner theme moduleHolderModel).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'moduleHolderModel' -> 'parent' -> () From: ( | {
          'Category: appearance\x7fModuleInfo: Module: moduleHolderModel InitialContents: FollowSlot\x7fVisibility: public'
         
          preferredColor = ( |
             | 
-            preferences outliner colorScheme moduleHolderModel).
+            preferences outliner theme moduleHolderModel).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'moduleHolderModel' -> 'parent' -> () From: ( | {

@@ -1,8 +1,9 @@
  '$Revision: 30.12 $'
  '
-Copyright 1992-2012 AUTHORS.
-See the LICENSE file for license information.
+Copyright 1992-2014 AUTHORS.
+See the legal/LICENSE file for license information and legal/AUTHORS for authors.
 '
+["preFileIn" self] value
 
 
  '-- Module body'
@@ -252,12 +253,6 @@ SlotsToOmit: setModule.
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'selfSlotModel' -> 'parent' -> () From: ( | {
-         'Category: copy-down slots\x7fModuleInfo: Module: selfSlotModel InitialContents: FollowSlot'
-        
-         copyDownColor = paint copyRed: 0.86999 Green: 0.820137  Blue: 0.820137.
-        } | ) 
-
- bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'selfSlotModel' -> 'parent' -> () From: ( | {
          'Category: editing whole thing\x7fModuleInfo: Module: selfSlotModel InitialContents: FollowSlot\x7fVisibility: private'
         
          copySlotsWithCategoriesSetForAdding: mirr = ( |
@@ -352,15 +347,23 @@ SlotsToOmit: setModule.
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'selfSlotModel' -> 'parent' -> () From: ( | {
-         'Category: copy-down slots\x7fModuleInfo: Module: selfSlotModel InitialContents: FollowSlot\x7fVisibility: public'
+         'Category: appearance\x7fModuleInfo: Module: selfSlotModel InitialContents: FollowSlot'
         
-         preferredColor = ( |
-             c.
+         preferredBodyColor = ( |
             | 
-            c: resend.preferredColor.
             slot isNotNil && [slot isCopiedDown]
-              ifTrue: [copyDownColor]
-               False: [c]).
+              ifTrue: [ preferences outliner theme copiedDownSlotBody ]
+               False: [ preferences outliner theme normalSlotBody ]).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'selfSlotModel' -> 'parent' -> () From: ( | {
+         'Category: appearance\x7fModuleInfo: Module: selfSlotModel InitialContents: FollowSlot'
+        
+         preferredHeaderColor = ( |
+            | 
+            slot isNotNil && [slot isCopiedDown]
+              ifTrue: [ preferences outliner theme copiedDownSlotBody ]
+               False: [ preferences outliner theme normalSlotBody ]).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'selfSlotModel' -> 'parent' -> () From: ( | {

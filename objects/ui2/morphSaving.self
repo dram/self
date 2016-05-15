@@ -3,6 +3,7 @@
 Copyright 1992-2014 AUTHORS.
 See the legal/LICENSE file for license information and legal/AUTHORS for authors.
 '
+["preFileIn" self] value
 
 
  '-- Module body'
@@ -288,6 +289,14 @@ See the legal/LICENSE file for license information and legal/AUTHORS for authors
         
          prototype = ( |
             | enumerationMorphElement).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> () From: ( | {
+         'Category: filing out\x7fModuleInfo: Module: morphSaving InitialContents: FollowSlot\x7fVisibility: public'
+        
+         prototype = ( |
+            | 
+            evaluatorMorph).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'expanderMorph' -> () From: ( | {
@@ -1309,6 +1318,14 @@ SlotsToOmit: comment directory fileInTimeString myComment postFileIn revision su
         
          prototype = ( |
             | textViewerMorph).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'transparentSpacerMorph' -> () From: ( | {
+         'Category: filing out\x7fModuleInfo: Module: morphSaving InitialContents: FollowSlot\x7fVisibility: public'
+        
+         prototype = ( |
+            | 
+            transparentSpacerMorph).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'trashCanExpandedMorph' -> () From: ( | {

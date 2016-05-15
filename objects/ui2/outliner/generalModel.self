@@ -3,6 +3,7 @@
 Copyright 1992-2014 AUTHORS.
 See the legal/LICENSE file for license information and legal/AUTHORS for authors.
 '
+["preFileIn" self] value
 
 
  '-- Module body'
@@ -492,7 +493,7 @@ I use:
             | 
             needSpacerToKeepButtonOnRight ifFalse: [^ self].
             myOutliner header addMorphLast:
-              spacerMorph copy beFlexible color: myOutliner color.
+              transparentSpacerMorph copy beFlexible.
             self).
         } | ) 
 
@@ -1382,7 +1383,7 @@ and calling \"expand:\"\x7fModuleInfo: Module: generalModel InitialContents: Fol
         
          menuColor = ( |
             | 
-            preferences outliner colorScheme generalModelMenuColor).
+            preferences outliner theme generalModelMenuColor).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'generalModel' -> 'parent' -> () From: ( | {
@@ -1583,7 +1584,7 @@ May cause me to expand if doExpand is true. -- dmu 10/04\x7fModuleInfo: Module: 
         
          preferredBodyColor = ( |
             | 
-            preferences outliner colorScheme generalModel).
+            preferences outliner theme generalModel).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'generalModel' -> 'parent' -> () From: ( | {
@@ -1591,7 +1592,7 @@ May cause me to expand if doExpand is true. -- dmu 10/04\x7fModuleInfo: Module: 
         
          preferredBorderColor = ( |
             | 
-            preferences outliner colorScheme generalModelBorder).
+            preferences outliner theme generalModelBorder).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'generalModel' -> 'parent' -> () From: ( | {
@@ -1614,7 +1615,7 @@ May cause me to expand if doExpand is true. -- dmu 10/04\x7fModuleInfo: Module: 
         
          preferredHeaderColor = ( |
             | 
-            preferences outliner colorScheme headerColorFor: referrent).
+            preferences outliner theme headerColorFor: referrent).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'generalModel' -> 'parent' -> () From: ( | {
@@ -1622,7 +1623,7 @@ May cause me to expand if doExpand is true. -- dmu 10/04\x7fModuleInfo: Module: 
         
          preferredSlotTitleColor = ( |
             | 
-            preferences outliner colorScheme slotTitle).
+            preferences outliner theme slotTitle).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'generalModel' -> 'parent' -> () From: ( | {
@@ -1630,7 +1631,7 @@ May cause me to expand if doExpand is true. -- dmu 10/04\x7fModuleInfo: Module: 
         
          preferredTagColor = ( |
             | 
-            preferences outliner colorScheme tagColorFor: referrent).
+            preferences outliner theme tagColorFor: referrent).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'generalModel' -> 'parent' -> () From: ( | {
@@ -1638,7 +1639,7 @@ May cause me to expand if doExpand is true. -- dmu 10/04\x7fModuleInfo: Module: 
         
          preferredTitleColor = ( |
             | 
-            preferences outliner colorScheme titleColorFor: referrent).
+            preferences outliner theme titleColorFor: referrent).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'generalModel' -> 'parent' -> () From: ( | {

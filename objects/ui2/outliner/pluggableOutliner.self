@@ -8,6 +8,221 @@ See the legal/LICENSE file for license information and legal/AUTHORS for authors
 
  '-- Module body'
 
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> () From: ( | {
+         'Category: graphical interface\x7fCategory: ui2\x7fCategory: Programming Environment\x7fCategory: Pluggable Outliner Framework\x7fCategory: evalutators\x7fModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot'
+        
+         evaluatorMorph = bootstrap define: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> () ToBe: bootstrap addSlotsTo: (
+             bootstrap remove: 'parent' From:
+             bootstrap remove: 'prototype' From:
+             globals frameMorph copyRemoveAllMorphs ) From: bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> () From: ( |
+             {} = 'ModuleInfo: Creator: globals evaluatorMorph.
+
+CopyDowns:
+globals frameMorph. copyRemoveAllMorphs 
+SlotsToOmit: parent prototype.
+
+\x7fIsComplete: '.
+            | ) .
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> () From: ( | {
+         'Category: Evaluator Morph State\x7fModuleInfo: Module: pluggableOutliner InitialContents: InitializeToExpression: (nil)'
+        
+         buttonRow.
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> () From: ( | {
+         'Category: Evaluator Morph State\x7fModuleInfo: Module: pluggableOutliner InitialContents: InitializeToExpression: (uglyTextEditorMorph copy)'
+        
+         editor <- uglyTextEditorMorph copy.
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> () From: ( | {
+         'Category: Evaluator Morph State\x7fModuleInfo: Module: pluggableOutliner InitialContents: InitializeToExpression: (nil)'
+        
+         outlinerModel.
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> () From: ( | {
+         'ModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot\x7fVisibility: private'
+        
+         parent* = bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> 'parent' -> () From: ( |
+             {} = 'ModuleInfo: Creator: globals evaluatorMorph parent.
+'.
+            | ) .
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> 'parent' -> () From: ( | {
+         'ModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot\x7fVisibility: public'
+        
+         copyOnEvt: evt OutlinerModel: model = ( |
+             b1.
+             b2.
+             b3.
+             f.
+             r.
+             result.
+            | 
+              f: copy.
+              f outlinerModel: model.
+
+            b1: newEvaluatorButtonLabel: 'Get it'
+                                 Script: 'target get_it_cmd: event'
+                         IsAsynchronous: true.
+            b2: newEvaluatorButtonLabel: 'Do it'
+                                 Script: 'target  do_it_cmd: event'
+                         IsAsynchronous: true.
+            b3: newEvaluatorButtonLabel: 'Close'
+                                 Script: 'target delete'
+                         IsAsynchronous: false.
+
+            r: newEvaluatorButtonRow: (b1 & b2 & b3 ) asVector.
+
+            f editor: uglyTextEditorMorph copyString: '' Style: evaluatorStyle.
+            f editor receiver: f outlinerModel receiver.
+            f editor beTypingFocusFor: evt sourceHand.
+            f editor color: model preferredBodyColor.
+            f editor fontColor: model preferredTitleColor.
+            f editor frameStyle: f editor flatStyle.
+
+            f buttonRow: r.
+            f buttonRow morphsDo: [|:b|
+              b color: f outlinerModel preferredBodyColor.
+              b labelColor: f outlinerModel preferredTitleColor].
+
+            b1 target: f editor text.
+            b2 target: f editor text.
+            f editor borderWidth: 0.
+
+            f addMorphFirst: f editor.
+            f addMorphLast:  r.
+            f frameStyle: f insetBezelStyle.
+            f borderWidth: 2.
+            f beFlexibleHorizontally.
+            f leftJustify.
+            f color: model preferredBodyColor.
+            result: f.
+
+            b3 target: result.
+
+            f).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> 'parent' -> () From: ( | {
+         'ModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot'
+        
+         evaluatorStyle = bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> 'parent' -> 'evaluatorStyle' -> () From: ( |
+             {} = 'ModuleInfo: Creator: globals evaluatorMorph parent evaluatorStyle.
+'.
+            | ) .
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> 'parent' -> 'evaluatorStyle' -> () From: ( | {
+         'ModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot'
+        
+         color = paint named: 'yellow'.
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> 'parent' -> 'evaluatorStyle' -> () From: ( | {
+         'ModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot'
+        
+         fontColor = paint named: 'transparent'.
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> 'parent' -> 'evaluatorStyle' -> () From: ( | {
+         'ModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot'
+        
+         fontSpec = ( |
+            | evaluatorMorph preferredFontSpec).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> 'parent' -> 'evaluatorStyle' -> () From: ( | {
+         'ModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot'
+        
+         parent* = bootstrap stub -> 'traits' -> 'oddball' -> ().
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> 'parent' -> () From: ( | {
+         'ModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot'
+        
+         evaluatorStyleProto = bootstrap define: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> 'parent' -> 'evaluatorStyleProto' -> () ToBe: bootstrap addSlotsTo: (
+             bootstrap remove: 'parent' From:
+             globals generalModel parent styleProto copy ) From: bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> 'parent' -> 'evaluatorStyleProto' -> () From: ( |
+             {} = 'ModuleInfo: Creator: globals evaluatorMorph parent evaluatorStyleProto.
+
+CopyDowns:
+globals generalModel parent styleProto. copy 
+SlotsToOmit: parent.
+
+'.
+            | ) .
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> 'parent' -> () From: ( | {
+         'ModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot'
+        
+         morphTypeName = 'evaluatorMorph'.
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> 'parent' -> () From: ( | {
+         'ModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot\x7fVisibility: private'
+        
+         newEvaluatorButtonLabel: l Script: s IsAsynchronous: isA = ( |
+             b.
+             n.
+            | 
+            b: ui2Button copy.
+            b script: s.
+            b isAsynchronous: isA.
+            n: preferredFontSpec size - 2.
+            b label: l  FontSpec:      (preferredFontSpec copySize: n)
+                        FontColor:      paint named: 'red'.
+            b beFlexibleHorizontally.
+            b).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> 'parent' -> () From: ( | {
+         'ModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot\x7fVisibility: private'
+        
+         newEvaluatorButtonRow: buts = ( |
+             r.
+            | 
+            r: rowMorph    copy.
+            r borderWidth: 0.
+            buts reverseDo: [|:b| r addMorph: b].
+            r moveToFront: buts first.
+            r beShrinkWrapVertically.
+            r).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> 'parent' -> () From: ( | {
+         'ModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot'
+        
+         parent* = bootstrap stub -> 'traits' -> 'frameMorph' -> ().
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> 'parent' -> () From: ( | {
+         'ModuleInfo: Module: pluggableOutliner InitialContents: InitializeToExpression: (fontSpec copyName: \'verdana\' Size: 12 Style: \'bold\')'
+        
+         preferredFontSpec <- fontSpec copyName: 'verdana' Size: 12 Style: 'bold'.
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'evaluatorMorph' -> 'parent' -> () From: ( | {
+         'ModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot'
+        
+         recolor = ( |
+            | 
+            resend.recolor. 
+            morphsDo: [|:m| m color: outlinerModel preferredBodyColor].
+            color: outlinerModel preferredBodyColor. 
+            editor color: outlinerModel preferredBodyColor. 
+            editor fontColor: outlinerModel preferredTitleColor. 
+            buttonRow morphsDo: [|:b|
+              b color: outlinerModel preferredBodyColor.
+              b labelColor: outlinerModel preferredTitleColor].
+            self).
+        } | ) 
+
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'modules' -> () From: ( | {
          'ModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot'
         
@@ -364,7 +579,6 @@ use hold  for mac menu
             | 
             model expand: evt.
             i: model newOutlinerForAddingSlot.
-            i colorAll: color.
             model addNewSlotOutliner: i.
             i editWholeThing: evt.
             items layoutChanged.
@@ -422,11 +636,12 @@ boxedItems.\x7fModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot
             body  borderWidth: 0.
             body  baseMinHeight: 0.
             body  beFlexible.
+            body  color: paint named: 'transparent'.
 
             buildItemsHolder.
 
             indentSubParts ifTrue: [
-              body addMorphLast: rigidSpacer copy color: (paint named: 'transparent')
+              body addMorphLast: rigidSpacer copy
             ].
             body addMorphLast: items.
             recolor.
@@ -461,6 +676,7 @@ boxedItems.\x7fModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot
          buildHeader = ( |
             | 
             header: rowMorph copy removeAllMorphs beFlexible borderWidth: 0.
+            header color: paint named: 'transparent'.
             header borderWidth: 4.
             fillInHeader.
             header).
@@ -471,7 +687,7 @@ boxedItems.\x7fModuleInfo: Module: pluggableOutliner InitialContents: FollowSlot
         
          buildSpacer = ( |
             | 
-            spacerMorph copyH: 2).
+            transparentSpacerMorph copyH: 2).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'pluggableOutliner' -> 'parent' -> () From: ( | {
@@ -1144,7 +1360,7 @@ Same for collapse:, expandAll: collapseAll: -- dmu 4/1\x7fModuleInfo: Module: pl
          newColumn = ( |
             | 
             ((columnMorph copy leftJustify
-            color: color)
+            color: paint named: 'transparent')
             borderWidth: 0)
             baseMinHeight: 0).
         } | ) 
@@ -1228,18 +1444,22 @@ Same for collapse:, expandAll: collapseAll: -- dmu 4/1\x7fModuleInfo: Module: pl
               m findMorphWithLabel ifNil: false IfNotNil: [|:l|
                  l color: model preferredTitleColor ]]].
             commentButton 
-               colorButtonBackground: model preferredBodyColor
+               colorButtonBackground: model preferredHeaderColor
                           Foreground: model preferredTitleColor.
             titleEditor ifNotNil: [ titleEditor labelColor: model preferredTitleColor].
-            color: model preferredBorderColor.
             body ifNotNil: [body color: model preferredBodyColor].
             items ifNotNil: [items recolor].
             model recolorModuleSummary.
             "Tags only at top level"
             isRoot
-               ifTrue: [tag color: model preferredTagColor]
-                False: [tag color: model preferredBodyColor].
+               ifTrue: [
+                  color: model preferredBorderColor.
+                  tag color: model preferredTagColor]
+                False: [
+                  tag color: model preferredBodyColor.
+                  color: model preferredBodyColor].
             expander color: model preferredTitleColor.
+            bottomMorphs ifNotNil: [bottomMorphs morphsDo: [|:m| m recolor]].
             self).
         } | ) 
 

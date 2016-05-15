@@ -922,7 +922,8 @@ Otherwise, the returned set will include nullPath.\x7fModuleInfo: Module: module
          'ModuleInfo: Module: module InitialContents: FollowSlot'
         
          preFileIn = ( |
-            | resend.preFileIn).
+            | 
+            "prefileIn" self).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'modules' -> 'init' -> 'parent' -> () From: ( | {
@@ -977,7 +978,7 @@ Otherwise, the returned set will include nullPath.\x7fModuleInfo: Module: module
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'modules' -> 'init' -> 'parent' -> () From: ( | {
-         'Category: file naming\x7fModuleInfo: Module: module InitialContents: FollowSlot\x7fVisibility: public'
+         'Category: trees\x7fModuleInfo: Module: module InitialContents: FollowSlot\x7fVisibility: public'
         
          registerTree: t At: a = ( |
             | 
@@ -1168,7 +1169,7 @@ Otherwise, the returned set will include nullPath.\x7fModuleInfo: Module: module
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'modules' -> 'init' -> 'parent' -> () From: ( | {
-         'Category: file naming\x7fModuleInfo: Module: module InitialContents: FollowSlot'
+         'Category: trees\x7fModuleInfo: Module: module InitialContents: FollowSlot'
         
          treeAddress = ( |
             | 
@@ -1178,13 +1179,13 @@ Otherwise, the returned set will include nullPath.\x7fModuleInfo: Module: module
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'modules' -> 'init' -> 'parent' -> () From: ( | {
-         'Category: file naming\x7fModuleInfo: Module: module InitialContents: InitializeToExpression: (dictionary copyRemoveAll)'
+         'Category: trees\x7fModuleInfo: Module: module InitialContents: InitializeToExpression: (dictionary copyRemoveAll)'
         
          treeDictionary = dictionary copyRemoveAll.
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'modules' -> 'init' -> 'parent' -> () From: ( | {
-         'Category: file naming\x7fModuleInfo: Module: module InitialContents: FollowSlot\x7fVisibility: public'
+         'Category: trees\x7fModuleInfo: Module: module InitialContents: FollowSlot\x7fVisibility: public'
         
          treeRootFor: t IfAbsent: blk = ( |
             | treeDictionary at: t IfAbsent: blk).
@@ -1266,6 +1267,56 @@ SlotsToOmit: directory fileInTimeString myComment postFileIn revision subpartNam
          'ModuleInfo: Module: module InitialContents: FollowSlot\x7fVisibility: private'
         
          subpartNames <- ''.
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'preferences' -> () From: ( | {
+         'ModuleInfo: Module: module InitialContents: FollowSlot'
+        
+         modules = bootstrap setObjectAnnotationOf: bootstrap stub -> 'globals' -> 'preferences' -> 'modules' -> () From: ( |
+             {} = 'ModuleInfo: Creator: globals preferences modules.
+'.
+            | ) .
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'preferences' -> 'modules' -> () From: ( | {
+         'ModuleInfo: Module: module InitialContents: FollowSlot'
+        
+         baseDirectory = ( |
+            | bootstrap selfObjectsWorkingDir).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'preferences' -> 'modules' -> () From: ( | {
+         'ModuleInfo: Module: module InitialContents: FollowSlot'
+        
+         baseDirectory: b = ( |
+            | bootstrap selfObjectsWorkingDir: b. self).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'preferences' -> 'modules' -> () From: ( | {
+         'ModuleInfo: Module: module InitialContents: FollowSlot'
+        
+         directoryOfTree: tree = ( |
+            | modules init treeRootFor: tree IfAbsent: [|:m| ^ error: m]).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'preferences' -> 'modules' -> () From: ( | {
+         'ModuleInfo: Module: module InitialContents: FollowSlot'
+        
+         parent* = bootstrap stub -> 'traits' -> 'clonable' -> ().
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'preferences' -> 'modules' -> () From: ( | {
+         'ModuleInfo: Module: module InitialContents: FollowSlot'
+        
+         registerTree: tree At: directory = ( |
+            | modules init registerTree: tree At: directory. self).
+        } | ) 
+
+ bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'preferences' -> 'modules' -> () From: ( | {
+         'ModuleInfo: Module: module InitialContents: FollowSlot'
+        
+         trees = ( |
+            | modules init treeDictionary keys).
         } | ) 
 
  bootstrap addSlotsTo: bootstrap stub -> 'globals' -> 'transporter' -> () From: ( | {
