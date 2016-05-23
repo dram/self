@@ -9,7 +9,7 @@
 
 // Magic number, stored in proxyOop's cObject field, when it is killed.
 // safer to make it smiOop -- dmu
-const void *deadProxyObject = (void *)0x109b1500; 
+const void *deadProxyObject = (void *)0x109b1500;
 
 
 bool proxyOopClass::verify() {
@@ -20,9 +20,9 @@ oop proxyOopClass::allocate_bytes_prim(smi l, void *FH) {
     // This primitive allocates a region on the c heap of
     // the requested size. It also marks the memory
     // as being executable so that we can later call it.
-    
-  // Allocate 
-    // malloc tries to reuse what it thinks are unused parts of allocated pages, which can be clobbered by the VM. 
+
+  // Allocate
+    // malloc tries to reuse what it thinks are unused parts of allocated pages, which can be clobbered by the VM.
     // So we ask for completely new pages, at the expense of a little more memory.
   char* m = (char*) mmap(0, l, PROT_READ|PROT_WRITE|PROT_EXEC, MAP_PRIVATE|MAP_ANON, -1, 0);
   if (m == NULL) {
@@ -30,17 +30,30 @@ oop proxyOopClass::allocate_bytes_prim(smi l, void *FH) {
     prim_failure(FH, OUTOFMEMORYERROR);
     return NULL;
   }
-  
+
   // Set pointer
   foreignOopClass::set_pointer((void*)m);
-  
+
   // Save size
   size_of_allocated_memory = l;
-  
+
   // Set a type_seal so we are live
   set_type_seal((void *)0);
 
   return this;
+}
+
+oop proxyOopClass::free_bytes_prim(void *FH){
+    // Guards
+    if (!is_live()) {
+      prim_failure(FH, DEADPROXYERROR);
+      return NULL;
+    }
+
+    free(foreignOopClass::get_pointer());
+    foreignOopClass::kill_foreign();
+
+    return this;
 }
 
 oop proxyOopClass::load_bytevector_at_offset_prim(byteVectorOop bv, smi offset, void *FH){
@@ -49,7 +62,7 @@ oop proxyOopClass::load_bytevector_at_offset_prim(byteVectorOop bv, smi offset, 
       prim_failure(FH, DEADPROXYERROR);
       return NULL;
     }
-        
+
     char* b =         bv->bytes();
     int   l = (int)   bv->length();
     memcpy((char *)get_pointer() + offset, b, l);
@@ -62,7 +75,7 @@ oop proxyOopClass::read_bytevector_at_offset_prim(byteVectorOop bv, smi offset, 
       prim_failure(FH, DEADPROXYERROR);
       return NULL;
     }
-    
+
     char* b =         bv->bytes();
     int   l = (int)   bv->length();
     memcpy(b, (char *)get_pointer() + offset, l);
@@ -75,6 +88,6 @@ smi proxyOopClass::get_size_of_allocated_memory_prim(void *FH){
       prim_failure(FH, DEADPROXYERROR);
       return NULL;
     }
-    
+
     return size_of_allocated_memory;
 }
